@@ -19,3 +19,4 @@ app.use(cors());
 
 //routes
 app.use("/api", require("./routes/income"));
+app.use("/api", require("./routes/expense"));
