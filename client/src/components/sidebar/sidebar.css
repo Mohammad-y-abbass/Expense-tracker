@@ -1,0 +1,15 @@
+.sidebar {
+  width: 20%;
+  height: 100%;
+  flex: 1;
+  background: rgba(252, 246, 249, 0.78);
+  border: 3px solid #ffffff;
+  backdrop-filter: blur(4.5px);
+  border-radius: 32px;
+  overflow-x: hidden;
+  padding: 1rem;
+}
+.sidebar-list {
+    display: flex;
+    gap: 1rem;
+}
