@@ -6,26 +6,35 @@ import {
   faMoneyBillTransfer,
   faMoneyBill,
 } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
     <section className="sidebar">
       <ul>
-        <li className="sidebar-list">
-          <FontAwesomeIcon icon={faChartLine} />
-          <span>Dashboard</span>
+        <li>
+          <NavLink to="/" className="sidebar-list">
+            <FontAwesomeIcon icon={faChartLine} />
+            <span>Dashboard</span>
+          </NavLink>
         </li>
-        <li className="sidebar-list">
-          <FontAwesomeIcon icon={faMoneyBillTransfer} />
-          <span>View Transactions</span>
+        <li>
+          <NavLink to="/transactions" className="sidebar-list">
+            <FontAwesomeIcon icon={faMoneyBillTransfer} />
+            <span>Transactions</span>
+          </NavLink>
         </li>
-        <li className="sidebar-list">
-          <FontAwesomeIcon icon={faHandHoldingDollar} />
-          <span>Income</span>
+        <li>
+          <NavLink to="/income" className="sidebar-list">
+            <FontAwesomeIcon icon={faHandHoldingDollar} />
+            <span>Income</span>
+          </NavLink>
         </li>
-        <li className="sidebar-list">
-          <FontAwesomeIcon icon={faMoneyBill} />
-          <span>Expenses</span>
+        <li>
+          <NavLink to="/expense" className="sidebar-list">
+            <FontAwesomeIcon icon={faMoneyBill} />
+            <span>Expenses</span>
+          </NavLink>
         </li>
       </ul>
     </section>
