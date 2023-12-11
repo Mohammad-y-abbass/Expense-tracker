@@ -9,8 +9,11 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addIncome, fetchIncomeData } from "../../features/income/incomeSlice";
 import { useFormik } from "formik";
+import Loader from "../../components/loader/Loader";
 const Income = () => {
   const incomeData = useSelector((state) => state.income.incomeData);
+  console.log(incomeData);
+
   const status = useSelector((state) => state.income.status);
   const error = useSelector((state) => state.income.error);
   const dispatch = useDispatch();
@@ -31,16 +34,16 @@ const Income = () => {
       try {
         await dispatch(addIncome(values)).unwrap();
         dispatch(fetchIncomeData());
+        formik.resetForm();
       } catch (error) {
         console.error(error);
       }
     },
   });
-
+  const totalIncome = incomeData.reduce((acc, curr) => acc + curr.amount, 0);
   return (
     <div className="mainbar">
-      <h1>Income</h1>
-      <h2 className="total-income">Total Income</h2>
+      <h2 className="total-income">Total Income: ${totalIncome}</h2>
       <div className="income-container">
         <form onSubmit={formik.handleSubmit}>
           <input
@@ -99,7 +102,7 @@ const Income = () => {
           </button>
         </form>
         <div>
-          {status === "loading" && <div>Loading...</div>}
+          {status === "loading" && <Loader />}
           {status === "failed" && <div>no data</div>}
           {status === "succeeded" && <DataTable rows={incomeData} />}
         </div>

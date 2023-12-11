@@ -9,6 +9,8 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import { TablePagination } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,16 +33,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:last-child td, &:last-child th": {
     border: 0,
   },
-  "&:hover": {
-    backgroundColor: "black !important",
-  },
 }));
 
 function DataTable({ rows }) {
   return (
-    <Box sx={{ maxWidth: "100%", overflowX: "auto" }}>
+    <Box sx={{ maxWidth: "100%", overflow: "auto" }}>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 1000 }} aria-label="customized table">
+        <Table
+          sx={{ minWidth: 900}}
+          aria-label="customized table"
+        >
           <TableHead>
             <TableRow>
               <StyledTableCell>Title</StyledTableCell>
@@ -57,7 +59,7 @@ function DataTable({ rows }) {
                 <StyledTableCell component="th" scope="row">
                   {row.title}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.amount}</StyledTableCell>
+                <StyledTableCell align="right">${row.amount}</StyledTableCell>
                 <StyledTableCell align="right">
                   {new Date(row.date).toLocaleDateString("en-US", {
                     year: "numeric",
