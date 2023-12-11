@@ -7,19 +7,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DataTable from "../../components/table/DataTable";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addIncome, fetchIncomeData } from "../../features/income/incomeSlice";
+import {
+  addIncome,
+  fetchIncomeData,
+  deleteIncome,
+} from "../../features/income/incomeSlice";
 import { useFormik } from "formik";
 import Loader from "../../components/loader/Loader";
 const Income = () => {
   const incomeData = useSelector((state) => state.income.incomeData);
-  console.log(incomeData);
-
   const status = useSelector((state) => state.income.status);
   const error = useSelector((state) => state.income.error);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchIncomeData());
   }, [dispatch]);
+
+  const handleIncomeDelete = (incomeId) => {
+    dispatch(deleteIncome(incomeId));
+    dispatch(fetchIncomeData());
+    console.log(incomeId, "deleted");
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -101,10 +109,18 @@ const Income = () => {
             + Add Income
           </button>
         </form>
-        <div>
+        <div style={{ width: "100%" }}>
           {status === "loading" && <Loader />}
           {status === "failed" && <div>no data</div>}
-          {status === "succeeded" && <DataTable rows={incomeData} />}
+          {status === "succeeded" && (
+            <DataTable
+              rows={incomeData}
+              action={(income) => {
+                handleIncomeDelete(income._id);
+                console.log(income._id);
+              }}
+            />
+          )}
         </div>
       </div>
     </div>

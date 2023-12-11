@@ -9,8 +9,6 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import { TablePagination } from "@mui/material";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,14 +33,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function DataTable({ rows }) {
+function DataTable({ rows, action }) {
+  console.log(rows);
   return (
     <Box sx={{ maxWidth: "100%", overflow: "auto" }}>
       <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 900}}
-          aria-label="customized table"
-        >
+        <Table sx={{ width: "100%" }} aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Title</StyledTableCell>
@@ -55,7 +51,7 @@ function DataTable({ rows }) {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <StyledTableRow key={row.name}>
+              <StyledTableRow key={row._id}>
                 <StyledTableCell component="th" scope="row">
                   {row.title}
                 </StyledTableCell>
@@ -69,7 +65,13 @@ function DataTable({ rows }) {
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.category}</StyledTableCell>
                 <StyledTableCell align="right">{row.note}</StyledTableCell>
-                <StyledTableCell align="right">
+                <StyledTableCell
+                  align="right"
+                  onClick={() => {
+                    action(row);
+                    console.log(row);
+                  }}
+                >
                   <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />
                 </StyledTableCell>
               </StyledTableRow>
