@@ -21,7 +21,7 @@
   resize: none;
   box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
   color: rgba(34, 34, 96, 0.9);
-  display: block;
+  display: flex;
   width: 100%;
   max-width: 400px;
   margin-bottom: 1rem;
@@ -57,4 +57,5 @@
 }
 .income-container {
     display: flex;
+    gap: 1rem;
 }

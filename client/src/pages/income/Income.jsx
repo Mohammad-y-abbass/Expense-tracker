@@ -4,28 +4,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./income.css";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import DataTable from "../../components/table/DataTable";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { fetchIncomeData } from "../../features/income/incomeSlice";
 const Income = () => {
-  const [startDate, setStartDate] = useState();
-  const [incomeData, setIncomeData] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const incomeData = useSelector((state) => state.income.incomeData);
+  const status = useSelector((state) => state.income.status);
+  const error = useSelector((state) => state.income.error);
+  console.log(incomeData);
+  const dispatch = useDispatch();
   useEffect(() => {
-    const getIncomeData = async () => {
-      try {
-        const response = await fetch("http://localhost:9000/api/get-income");
-        if (!response.ok) throw new Error(response.statusText);
-        const jsonData = await response.json();
-        setIncomeData(jsonData);
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
-    getIncomeData();
-  }, []);
-
-  useEffect(() => {
-    console.log(incomeData);
-  }, [incomeData]);
-
+    dispatch(fetchIncomeData());
+  }, [dispatch]);
   return (
     <div className="mainbar">
       <h1>Income</h1>
@@ -71,34 +63,9 @@ const Income = () => {
           </button>
         </form>
         <div>
-          <table className="income-table">
-            <thead>
-              <tr>
-                <th>Salary Title</th>
-                <th>Salary Amount</th>
-                <th>Date</th>
-                <th>Category</th>
-                <th>Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              {incomeData.length > 0 ? (
-                incomeData.map((income) => (
-                  <tr key={income._id}>
-                    <td>{income.title}</td>
-                    <td>{income.amount}</td>
-                    <td>{income.date}</td>
-                    <td>{income.category}</td>
-                    <td>{income.note}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5">No income data available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          {status === "loading" && <div>Loading...</div>}
+          {status === "failed" && <div>no data</div>}
+          {status === "succeeded" && <DataTable rows={incomeData} />}
         </div>
       </div>
     </div>
