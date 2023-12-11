@@ -7,15 +7,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#fcf6f9",
     color: theme.palette.common.black,
+    textAlign: "center",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
     backgroundColor: "#fcf6f9",
+    textAlign: "center",
   },
 }));
 
@@ -27,13 +31,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:last-child td, &:last-child th": {
     border: 0,
   },
+  "&:hover": {
+    backgroundColor: "black !important",
+  },
 }));
 
 function DataTable({ rows }) {
   return (
     <Box sx={{ maxWidth: "100%", overflowX: "auto" }}>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <Table sx={{ minWidth: 1000 }} aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Title</StyledTableCell>
@@ -41,6 +48,7 @@ function DataTable({ rows }) {
               <StyledTableCell align="right">Date</StyledTableCell>
               <StyledTableCell align="right">Category</StyledTableCell>
               <StyledTableCell align="right">Note</StyledTableCell>
+              <StyledTableCell align="right">Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -59,6 +67,9 @@ function DataTable({ rows }) {
                 </StyledTableCell>
                 <StyledTableCell align="right">{row.category}</StyledTableCell>
                 <StyledTableCell align="right">{row.note}</StyledTableCell>
+                <StyledTableCell align="right">
+                  <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

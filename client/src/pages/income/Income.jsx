@@ -7,44 +7,74 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DataTable from "../../components/table/DataTable";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { fetchIncomeData } from "../../features/income/incomeSlice";
+import { addIncome, fetchIncomeData } from "../../features/income/incomeSlice";
+import { useFormik } from "formik";
 const Income = () => {
-  const [startDate, setStartDate] = useState(new Date());
   const incomeData = useSelector((state) => state.income.incomeData);
   const status = useSelector((state) => state.income.status);
   const error = useSelector((state) => state.income.error);
-  console.log(incomeData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchIncomeData());
   }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      amount: "",
+      date: "",
+      category: "",
+      note: "",
+    },
+
+    onSubmit: async (values) => {
+      try {
+        await dispatch(addIncome(values)).unwrap();
+        dispatch(fetchIncomeData());
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  });
+
   return (
     <div className="mainbar">
       <h1>Income</h1>
       <h2 className="total-income">Total Income</h2>
       <div className="income-container">
-        <form>
+        <form onSubmit={formik.handleSubmit}>
           <input
             type="text"
             placeholder="Salary Title"
             className="income-input"
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            name="title"
           />
           <input
             type="text"
             placeholder="Salary Amount"
             className="income-input"
+            value={formik.values.amount}
+            onChange={formik.handleChange}
+            name="amount"
           />
           <div className="income-input">
             <FontAwesomeIcon icon={faCalendar} className="calendar-icon" />
             <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              maxDate={new Date()}
+              selected={formik.values.date}
+              onChange={(date) => formik.setFieldValue("date", date)}
               placeholderText="select date"
               className="date-picker"
+              name="date"
             />
           </div>
-          <select className="income-input">
+          <select
+            className="income-input"
+            value={formik.values.category}
+            onChange={formik.handleChange}
+            name="category"
+          >
             <option value="" disabled>
               Select Option
             </option>
@@ -57,7 +87,13 @@ const Income = () => {
             <option value="youtube">Youtube</option>
             <option value="other">Other</option>
           </select>
-          <textarea rows={5} placeholder="Add a note..."></textarea>
+          <textarea
+            rows={5}
+            placeholder="Add a note..."
+            onChange={formik.handleChange}
+            value={formik.values.note}
+            name="note"
+          ></textarea>
           <button type="submit" className="income-btn">
             + Add Income
           </button>

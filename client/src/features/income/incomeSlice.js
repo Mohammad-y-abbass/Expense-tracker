@@ -16,6 +16,23 @@ export const fetchIncomeData = createAsyncThunk(
   }
 );
 
+export const addIncome = createAsyncThunk(
+  "income/addIncome",
+  async (incomeData) => {
+    const response = await fetch("http://localhost:9000/api/add-income", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(incomeData),
+    });
+
+    if (!response.ok) throw new Error(response.statusText);
+    const jsonData = await response.json();
+    return jsonData;
+  }
+);
+
 export const incomeSlice = createSlice({
   name: "income",
   initialState,
@@ -32,12 +49,22 @@ export const incomeSlice = createSlice({
       .addCase(fetchIncomeData.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(addIncome.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addIncome.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.income.push(action.payload);
+      })
+      .addCase(addIncome.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
       });
   },
 });
 
-export const { getIcomeDataStart, getIncomeDataSuccess, getIncomeDataFailure } =
-  incomeSlice.actions;
+
 
 const incomeReducer = incomeSlice.reducer;
 

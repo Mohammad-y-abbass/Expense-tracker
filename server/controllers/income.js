@@ -1,11 +1,11 @@
 const Income = require("../models/income");
 
 const addIncome = async (req, res) => {
-  const { title, amount, description, category, date } = req.body;
+  const { title, amount, note, category, date } = req.body;
   const newIncome = new Income({
     title,
     amount,
-    description,
+    note,
     category,
     date,
   });
