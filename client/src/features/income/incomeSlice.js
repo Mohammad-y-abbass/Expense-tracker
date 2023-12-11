@@ -29,7 +29,7 @@ export const addIncome = createAsyncThunk(
 
     if (!response.ok) throw new Error(response.statusText);
     const jsonData = await response.json();
-    return jsonData;
+    return jsonData.income;
   }
 );
 
@@ -69,7 +69,7 @@ export const incomeSlice = createSlice({
       })
       .addCase(addIncome.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.income.push(action.payload);
+        state.incomeData = [...state.incomeData, action.payload];
       })
       .addCase(addIncome.rejected, (state, action) => {
         state.status = "failed";
