@@ -56,7 +56,7 @@ const Income = () => {
         <form onSubmit={formik.handleSubmit}>
           <input
             type="text"
-            placeholder="Salary Title"
+            placeholder="Income Title"
             className="income-input"
             value={formik.values.title}
             onChange={formik.handleChange}
@@ -64,7 +64,7 @@ const Income = () => {
           />
           <input
             type="text"
-            placeholder="Salary Amount"
+            placeholder="Income Amount"
             className="income-input"
             value={formik.values.amount}
             onChange={formik.handleChange}

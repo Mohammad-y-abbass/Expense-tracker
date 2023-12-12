@@ -80,9 +80,11 @@ export const incomeSlice = createSlice({
       })
       .addCase(deleteIncome.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.incomeData = state.incomeData.filter(
-          (income) => income._id !== action.payload._id
-        );
+        state.incomeData = [
+          ...state.incomeData.filter(
+            (income) => income._id !== action.payload._id
+          ),
+        ];
       })
       .addCase(deleteIncome.rejected, (state, action) => {
         state.status = "failed";

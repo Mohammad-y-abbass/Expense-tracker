@@ -1,11 +1,11 @@
 const Expense = require("../models/expense");
 
 const addExpense = async (req, res) => {
-  const { title, amount, description, category, date } = req.body;
+  const { title, amount, note, category, date } = req.body;
   const newExpense = new Expense({
     title,
     amount,
-    description,
+    note,
     category,
     date,
   });
