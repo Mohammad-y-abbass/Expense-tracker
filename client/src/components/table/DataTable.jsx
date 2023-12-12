@@ -36,7 +36,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function DataTable({ rows, action }) {
   console.log(rows);
   return (
-    <Box sx={{ maxWidth: "100%", overflow: "auto" }}>
+    <Box sx={{ maxWidth: "100%", overflow: "auto" }} className="table">
       <TableContainer component={Paper}>
         <Table sx={{ width: "100%" }} aria-label="customized table">
           <TableHead>
