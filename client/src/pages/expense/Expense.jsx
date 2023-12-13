@@ -14,7 +14,7 @@ import {
   deleteExpense,
   fetchExpenseData,
 } from "../../features/expense/expenseSlice";
-
+import Alert from "@mui/material/Alert";
 const Expense = () => {
   const expenseData = useSelector((state) => state.expense.expenseData);
   const status = useSelector((state) => state.expense.status);
@@ -37,7 +37,13 @@ const Expense = () => {
       category: "",
       note: "",
     },
-
+    validate: (values) => {
+      const errors = {};
+      if (!values.title || !values.amount || !values.date || !values.category) {
+        errors.title = "Please fill all the required fields";
+      }
+      return errors;
+    },
     onSubmit: async (values) => {
       try {
         await dispatch(addExpense(values)).unwrap();
@@ -51,77 +57,82 @@ const Expense = () => {
   const totalExpense = expenseData.reduce((acc, curr) => acc + curr.amount, 0);
   return (
     <div className="mainbar">
-      <h2 className="total-income">Total Expense: ${totalExpense}</h2>
-      <form onSubmit={formik.handleSubmit}>
-        <input
-          type="text"
-          placeholder="Expense Title"
-          className="income-input"
-          value={formik.values.title}
-          onChange={formik.handleChange}
-          name="title"
-        />
-        <input
-          type="text"
-          placeholder="Expense Amount"
-          className="income-input"
-          value={formik.values.amount}
-          onChange={formik.handleChange}
-          name="amount"
-        />
-        <div className="income-input">
-          <FontAwesomeIcon icon={faCalendar} className="calendar-icon" />
-          <DatePicker
-            selected={formik.values.date}
-            onChange={(date) => formik.setFieldValue("date", date)}
-            placeholderText="select date"
-            className="date-picker"
-            name="date"
+      <h2 className="total">Total Expense: ${totalExpense}</h2>
+      <div className="container">
+        <form onSubmit={formik.handleSubmit}>
+          <input
+            type="text"
+            placeholder="Expense Title"
+            className={` ${formik.errors.title ? "input-error" : "input"}`}
+            value={formik.values.title}
+            onChange={formik.handleChange}
+            name="title"
           />
+          <input
+            type="text"
+            placeholder="Expense Amount"
+            className={` ${formik.errors.title ? "input-error" : "input"}`}
+            value={formik.values.amount}
+            onChange={formik.handleChange}
+            name="amount"
+          />
+          <div className={` ${formik.errors.title ? "input-error" : "input"}`}>
+            <FontAwesomeIcon icon={faCalendar} className="calendar-icon" />
+            <DatePicker
+              selected={formik.values.date}
+              onChange={(date) => formik.setFieldValue("date", date)}
+              placeholderText="select date"
+              className="date-picker"
+              name="date"
+            />
+          </div>
+          <select
+            className={` ${formik.errors.title ? "input-error" : "input"}`}
+            value={formik.values.category}
+            onChange={formik.handleChange}
+            name="category"
+          >
+            <option value="" disabled>
+              Select Option
+            </option>
+            <option value="salary">Grocery</option>
+            <option value="freelancing">Bills</option>
+            <option value="investments">Rent</option>
+            <option value="stocks">Holiday</option>
+            <option value="bitcoin">gas</option>
+            <option value="bank">luxury</option>
+            <option value="other">Other</option>
+          </select>
+          <textarea
+            rows={5}
+            placeholder="Add a note..."
+            onChange={formik.handleChange}
+            value={formik.values.note}
+            name="note"
+          ></textarea>
+          <button type="submit" className="btn">
+            + Add Expense
+          </button>
+        </form>
+        <div style={{ width: "100%" }}>
+          {status === "loading" && <Loader />}
+          {status === "failed" && (
+            <h1 className="error">{error}, please try again later</h1>
+          )}
+          {status === "succeeded" && (
+            <DataTable
+              rows={expenseData}
+              action={(expense) => {
+                handleExpenseDelete(expense._id);
+                console.log(expense._id);
+              }}
+            />
+          )}
         </div>
-        <select
-          className="income-input"
-          value={formik.values.category}
-          onChange={formik.handleChange}
-          name="category"
-        >
-          <option value="" disabled>
-            Select Option
-          </option>
-          <option value="salary">Grocery</option>
-          <option value="freelancing">Bills</option>
-          <option value="investments">Rent</option>
-          <option value="stocks">Holiday</option>
-          <option value="bitcoin">gas</option>
-          <option value="bank">luxury</option>
-          <option value="other">Other</option>
-        </select>
-        <textarea
-          rows={5}
-          placeholder="Add a note..."
-          onChange={formik.handleChange}
-          value={formik.values.note}
-          name="note"
-        ></textarea>
-        <button type="submit" className="income-btn">
-          + Add Expense
-        </button>
-      </form>
-      <div style={{ width: "100%" }}>
-        {status === "loading" && <Loader />}
-        {status === "failed" && (
-          <h1 className="error">{error}, please try again later</h1>
-        )}
-        {status === "succeeded" && (
-          <DataTable
-            rows={expenseData}
-            action={(expense) => {
-              handleExpenseDelete(expense._id);
-              console.log(expense._id);
-            }}
-          />
-        )}
       </div>
+      {formik.errors.title ? (
+        <Alert severity="error">{formik.errors.title} </Alert>
+      ) : null}
     </div>
   );
 };

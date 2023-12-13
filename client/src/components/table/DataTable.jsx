@@ -20,6 +20,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
     backgroundColor: "#fcf6f9",
     textAlign: "center",
+    textTransform: "capitalize",
   },
 }));
 
@@ -36,50 +37,54 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function DataTable({ rows, action }) {
   console.log(rows);
   return (
-    <Box sx={{ maxWidth: "100%", overflow: "auto" }} className="table">
-      <TableContainer component={Paper}>
-        <Table sx={{ width: "100%" }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>Title</StyledTableCell>
-              <StyledTableCell align="right">Amount</StyledTableCell>
-              <StyledTableCell align="right">Date</StyledTableCell>
-              <StyledTableCell align="right">Category</StyledTableCell>
-              <StyledTableCell align="right">Note</StyledTableCell>
-              <StyledTableCell align="right">Action</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row._id}>
-                <StyledTableCell component="th" scope="row">
-                  {row.title}
-                </StyledTableCell>
-                <StyledTableCell align="right">${row.amount}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {new Date(row.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </StyledTableCell>
-                <StyledTableCell align="right">{row.category}</StyledTableCell>
-                <StyledTableCell align="right">{row.note}</StyledTableCell>
-                <StyledTableCell
-                  align="right"
-                  onClick={() => {
-                    action(row);
-                    console.log(row);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+    <div className="table">
+      <Box sx={{ maxWidth: "100%", overflow: "auto" }}>
+        <TableContainer component={Paper}>
+          <Table sx={{ width: "100%" }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Title</StyledTableCell>
+                <StyledTableCell align="right">Amount</StyledTableCell>
+                <StyledTableCell align="right">Date</StyledTableCell>
+                <StyledTableCell align="right">Category</StyledTableCell>
+                <StyledTableCell align="right">Note</StyledTableCell>
+                <StyledTableCell align="right">Action</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <StyledTableRow key={row._id}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.title}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">${row.amount}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {new Date(row.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    {row.category}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{row.note}</StyledTableCell>
+                  <StyledTableCell
+                    align="right"
+                    onClick={() => {
+                      action(row);
+                      console.log(row);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faTrash} style={{ color: "red" }} />
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </div>
   );
 }
 

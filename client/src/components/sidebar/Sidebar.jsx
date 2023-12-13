@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChartLine,
   faHandHoldingDollar,
-  faMoneyBillTransfer,
   faMoneyBill,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
@@ -16,12 +15,6 @@ const Sidebar = () => {
           <NavLink to="/" className="sidebar-list">
             <FontAwesomeIcon icon={faChartLine} />
             <span>Dashboard</span>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/transactions" className="sidebar-list">
-            <FontAwesomeIcon icon={faMoneyBillTransfer} />
-            <span>Transactions</span>
           </NavLink>
         </li>
         <li>
